@@ -1,0 +1,39 @@
+intro: >-
+  My work sits at the intersection of mathematical optimization, machine learning, and
+  partial differential equations &mdash; in particular, optimization methods with provable
+  guarantees and their application to inverse problems and medical imaging.
+
+interests:
+  - Mathematical optimization &mdash; first- and second-order methods, momentum, convergence theory
+  - Inverse problems &mdash; proximal methods, regularization, learned reconstruction
+  - Machine learning &mdash; optimization for learning, deep learning for scientific problems
+  - Partial differential equations and scientific computing
+  - Medical imaging
+
+journal:
+  - title: >-
+      Deep learning methods for inverse problems using connections between proximal
+      operators and Hamilton&ndash;Jacobi equations
+    authors: Oluwatosin Akande, Gabriel P. Langlois, Akwum Onwunta
+    venue: Under second review at *SIAM Journal on Applied Mathematics*, 2025
+    link_label: "arXiv:2512.23829"
+    link_url: https://arxiv.org/abs/2512.23829
+  - title: >-
+      Momentum-based minimization of the Ginzburg&ndash;Landau functional on Euclidean
+      spaces and graphs
+    authors: Oluwatosin Akande, Patrick Dondl, Kanan Gupta, Akwum Onwunta, Stephan Wojtowytsch
+    venue: Under review at *Journal of Computational Physics*, 2024
+    link_label: "arXiv:2501.00389"
+    link_url: https://arxiv.org/abs/2501.00389
+
+conference:
+  - title: Methodological performance of data science in eco-sustainable design/engineering
+    authors: O. A. Akande, A. M. Adeleye, A. T. Adeleye
+    venue: >-
+      Proceedings of the 1st International Architectural Sciences and Applications
+      Symposium (IArcSAS), 27&ndash;29 October 2021
+
+cv_note: >-
+  A full CV is available on request &mdash; please [get in touch](mailto:oaa323@lehigh.edu).
+  Publications are also listed on
+  [Google Scholar](https://scholar.google.com/citations?user=tNDgo-8AAAAJ&hl=en).

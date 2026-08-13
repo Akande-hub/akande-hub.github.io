@@ -1,0 +1,52 @@
+# Rebuilds the HTML pages whenever content changes.
+#
+# Saving an edit in Pages CMS commits to content/, which triggers this workflow.
+# It runs build.py and commits the regenerated HTML back to the same branch.
+# If this ever fails, the previously generated HTML stays live and the site
+# keeps working - check the Actions tab for the error.
+
+name: Build site
+
+on:
+  push:
+    branches: [gh-pages]
+    paths:
+      - 'content/**'
+      - 'build.py'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml markdown
+
+      - name: Build pages
+        run: python3 build.py
+
+      - name: Commit regenerated pages
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -z "$(git status --porcelain -- '*.html')" ]; then
+            echo "No page changes."
+            exit 0
+          fi
+          git add ./*.html
+          git commit -m "Rebuild pages from content [skip ci]"
+          git push

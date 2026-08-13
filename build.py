@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
-"""Build the static site. Run:  python3 build.py
+"""Build the static site from the YAML files in content/.
 
-Edit the CONTENT section below to update the site, then re-run.
-Every page shares the sidebar and nav defined in shell().
+    python3 build.py
+
+You should not normally need to run this by hand. Editing anything in content/
+(through Pages CMS at app.pagescms.org, or directly on GitHub) triggers the
+GitHub Action in .github/workflows/build.yml, which runs this script and commits
+the regenerated HTML.
+
+Text fields accept Markdown: **bold**, *italic*, and [links](https://example.com).
+HTML entities such as &mdash; and &ndash; also work.
 """
 import os
+import yaml
+import markdown
 
-OUT = os.path.dirname(os.path.abspath(__file__))
-
-NAME = "Oluwatosin Akande"
-ROLE = "PhD Candidate, Industrial and Systems Engineering"
-
-# Profile links shown in the sidebar on every page.
-LINKS = [
-    ("Email", "mailto:oaa323@lehigh.edu"),
-    ("Google Scholar", "https://scholar.google.com/citations?user=tNDgo-8AAAAJ&hl=en"),
-    ("GitHub", "https://github.com/Akande-hub"),
-    ("LinkedIn", "https://www.linkedin.com/in/akandeoluwatosin/"),
-]
+ROOT = os.path.dirname(os.path.abspath(__file__))
+CONTENT = os.path.join(ROOT, "content")
 
 NAV = [
     ("Home", "index.html"),
@@ -28,37 +27,130 @@ NAV = [
     ("Awards", "awards.html"),
 ]
 
+_md = markdown.Markdown(extensions=[])
 
-def shell(page_file, title, body):
+
+def load(name):
+    with open(os.path.join(CONTENT, name + ".yml"), encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+def md_inline(text):
+    """Render Markdown but drop the wrapping <p> so it can sit inside a span."""
+    if text is None:
+        return ""
+    html = _md.reset().convert(str(text).strip())
+    if html.startswith("<p>") and html.endswith("</p>") and html.count("<p>") == 1:
+        html = html[3:-4]
+    return html
+
+
+def md_block(text, indent="    "):
+    """Render Markdown as one or more <p> blocks, indented to match the page."""
+    if text is None:
+        return ""
+    html = _md.reset().convert(str(text).strip())
+    lines = [indent + ln for ln in html.split("\n")]
+    return "\n".join(lines)
+
+
+def emphasise_name(text, site):
+    """Wrap the site owner's name in <span class="me"> inside an author list.
+
+    site.yml may list name_variants (e.g. "O. A. Akande") so abbreviated forms
+    in a citation are highlighted too.
+    """
+    html = md_inline(text)
+    names = [site["name"]] + list(site.get("name_variants") or [])
+    for n in sorted(names, key=len, reverse=True):
+        if n in html:
+            return html.replace(n, '<span class="me">%s</span>' % n, 1)
+    return html
+
+
+def entry(title, meta=None, body=None):
+    out = ['    <div class="entry">']
+    out.append('      <span class="title">%s</span>' % title)
+    if meta:
+        out.append('      <div class="meta">%s</div>' % meta)
+    if body:
+        out.append(body)
+    out.append("    </div>")
+    return "\n".join(out)
+
+
+def publication(pub, site):
+    meta = md_inline(pub.get("venue"))
+    if pub.get("link_url"):
+        meta += ' &middot;\n      <a href="%s">%s</a>' % (pub["link_url"], pub["link_label"])
+    return "\n".join([
+        '    <div class="entry">',
+        '      <span class="title">%s</span>' % md_inline(pub["title"]),
+        '      <div class="authors">%s</div>' % emphasise_name(pub["authors"], site),
+        '      <div class="meta">%s</div>' % meta,
+        "    </div>",
+    ])
+
+
+def project(proj, key="description", show_tag=True):
+    tag = ' <span class="tag">%s</span>' % proj["tag"] if (show_tag and proj.get("tag")) else ""
+    return "\n".join([
+        '    <div class="project">',
+        "      <h4>%s%s</h4>" % (proj["name"], tag),
+        "      <p>%s</p>" % md_inline(proj.get(key) or proj["description"]),
+        '      <div class="repo"><a href="%s">%s</a></div>'
+        % (proj["repo"], proj["repo"].replace("https://", "")),
+        "    </div>",
+    ])
+
+
+def year_list(items, year_key="year", text_key="text"):
+    out = ['    <ul class="plain">']
+    for it in items:
+        yr = it.get(year_key)
+        prefix = '<span class="year">%s</span> ' % yr if yr else ""
+        out.append("      <li>%s%s</li>" % (prefix, md_inline(it[text_key])))
+    out.append("    </ul>")
+    return "\n".join(out)
+
+
+def section(title):
+    return '    <h3 class="section">%s</h3>' % title
+
+
+def page_title(title):
+    return '    <h2 class="page-title">%s</h2>' % title
+
+
+def shell(site, page_file, title, body):
     links = "\n".join(
-        f'        <li><a href="{u}">{n}</a></li>' for n, u in LINKS
+        '        <li><a href="%s">%s</a></li>' % (l["url"], l["label"])
+        for l in site["links"]
     )
     nav = "\n".join(
-        '        <a href="{u}"{cls}>{n}</a>'.format(
-            u=u, n=n, cls=' class="active"' if u == page_file else ""
-        )
+        '        <a href="%s"%s>%s</a>' % (u, ' class="active"' if u == page_file else "", n)
         for n, u in NAV
     )
-    return f"""<!DOCTYPE html>
+    return """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} &middot; {NAME}</title>
-<meta name="description" content="{NAME} - PhD candidate in Industrial and Systems Engineering at Lehigh University. Mathematical optimization, machine learning, inverse problems, and PDEs.">
+<title>{title} &middot; {name}</title>
+<meta name="description" content="{desc}">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <div class="wrap">
 
   <aside class="sidebar">
-    <img class="avatar" src="assets/avatar.jpg" alt="{NAME}">
-    <h1>{NAME}</h1>
-    <p class="role">{ROLE}</p>
+    <img class="avatar" src="assets/avatar.jpg" alt="{name}">
+    <h1>{name}</h1>
+    <p class="role">{role}</p>
     <div class="affil">
-      <a href="https://engineering.lehigh.edu/ise">Industrial and Systems Engineering</a><br>
-      Lehigh University<br>
-      Bethlehem, PA, USA
+      <a href="{dept_url}">{dept}</a><br>
+      {university}<br>
+      {location}
     </div>
     <ul class="links">
 {links}
@@ -69,396 +161,193 @@ def shell(page_file, title, body):
     <nav class="top">
 {nav}
     </nav>
+
 {body}
+
     <footer class="site">
-      &copy; 2026 {NAME}
+      &copy; {year} {name}
     </footer>
   </main>
 
 </div>
 </body>
 </html>
-"""
+""".format(
+        title=title, name=site["name"], desc=site["meta_description"].strip(),
+        role=site["role"], dept_url=site["department_url"], dept=site["department"],
+        university=site["university"], location=site["location"],
+        links=links, nav=nav, body=body, year=site["footer_year"],
+    )
 
 
 # ----------------------------------------------------------------------
-# CONTENT
+# Page bodies
 # ----------------------------------------------------------------------
 
-HOME = """
-    <h2 class="page-title">About</h2>
-
-    <p class="lead">I'm a fourth-year PhD candidate in Industrial and Systems Engineering
-    (<a href="https://engineering.lehigh.edu/ise">Lehigh ISE</a>) at Lehigh University,
-    advised by Professor Akwum Onwunta. My dissertation, <em>PDEs and Machine Learning with
-    Applications in Medical Imaging</em>, develops optimization and deep learning methods for
-    inverse problems and imaging.</p>
-
-    <p>Before Lehigh, I earned a Master's degree in Mathematical Sciences from the African
-    Institute for Mathematical Sciences (<a href="https://aims.ac.rw/">AIMS</a>) in Rwanda,
-    and a Bachelor's degree in Pure and Applied Mathematics from Ladoke Akintola University
-    of Technology (<a href="https://www.lautech.edu.ng/undergraduate-programmes">LAUTECH</a>)
-    in Ogbomoso, Nigeria.</p>
-
-    <p>I served as President of the
-    <a href="https://www.linkedin.com/company/lehigh-informs-student-chapter/">Lehigh INFORMS
-    Student Chapter</a> for 2025&ndash;2026, and as Vice President and Treasurer of the
-    <a href="https://www.linkedin.com/company/nigerian-club-lehigh-university/">Lehigh University
-    Graduate Association of Nigerian Students</a>.</p>
-
-    <h3 class="section">Education</h3>
-
-    <div class="entry">
-      <span class="title">Ph.D. in Industrial and Systems Engineering</span>
-      <div class="meta">2023 &ndash; present &middot; Lehigh University, USA</div>
-      <p>Advisor: Prof. Akwum Onwunta. Dissertation: <em>PDEs and Machine Learning with
-      Applications in Medical Imaging</em>. Committee: Prof. Luis Nunes Vicente,
-      Prof. Daniel P. Robinson, Prof. Andreas Mang.</p>
-    </div>
-
-    <div class="entry">
-      <span class="title">M.Sc. in Mathematical Sciences</span>
-      <div class="meta">2021 &ndash; 2022 &middot; African Institute for Mathematical Sciences, Rwanda</div>
-      <p>Advisor: Prof. Dedunje Biatat V.A. Thesis: <em>Artificial Neural Networks Under
-      Constraint</em>. Committee: Prof. Blaise Tchapnda, Prof. Marcellin Atemkeng.</p>
-    </div>
-
-    <div class="entry">
-      <span class="title">B.Tech. in Pure and Applied Mathematics</span>
-      <div class="meta">2013 &ndash; 2019 &middot; Ladoke Akintola University of Technology, Nigeria</div>
-      <p>Grade: 4.52/5.0. First Class Honors.</p>
-    </div>
-
-    <h3 class="section">Research Interests</h3>
-    <p>Mathematical optimization &middot; Scientific computing &middot; Machine learning &middot;
-    Inverse problems &middot; Medical imaging &middot; Partial differential equations</p>
-
-    <h3 class="section">Selected Publications</h3>
-
-    <div class="entry">
-      <span class="title">Deep learning methods for inverse problems using connections between
-      proximal operators and Hamilton&ndash;Jacobi equations</span>
-      <div class="authors"><span class="me">Oluwatosin Akande</span>, Gabriel P. Langlois, Akwum Onwunta</div>
-      <div class="meta">Under second review at <em>SIAM Journal on Applied Mathematics</em>, 2025 &middot;
-      <a href="https://arxiv.org/abs/2512.23829">arXiv:2512.23829</a></div>
-    </div>
-
-    <div class="entry">
-      <span class="title">Momentum-based minimization of the Ginzburg&ndash;Landau functional
-      on Euclidean spaces and graphs</span>
-      <div class="authors"><span class="me">Oluwatosin Akande</span>, Patrick Dondl, Kanan Gupta,
-      Akwum Onwunta, Stephan Wojtowytsch</div>
-      <div class="meta">Under review at <em>Journal of Computational Physics</em>, 2024 &middot;
-      <a href="https://arxiv.org/abs/2501.00389">arXiv:2501.00389</a></div>
-    </div>
-
-    <p class="more"><a href="research.html">All publications &rarr;</a></p>
-
-    <h3 class="section">Ongoing Projects</h3>
-
-    <div class="project">
-      <h4>Learned Proximal Networks</h4>
-      <p>Learning proximal operators directly with input-convex neural networks, and using
-      the learned prior for reconstruction in inverse problems.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/learned-proximal-networks">github.com/Akande-hub/learned-proximal-networks</a></div>
-    </div>
-
-    <div class="project">
-      <h4>Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs</h4>
-      <p>Numerics for the SIAP revision: learning a convex potential whose gradient is the
-      proximal operator, then recovering the prior without per-query inversion.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/lpn_for_nonconvex_control">github.com/Akande-hub/lpn_for_nonconvex_control</a></div>
-    </div>
-
-    <p class="more"><a href="projects.html">All projects &rarr;</a></p>
-"""
-
-EXPERIENCE = """
-    <h2 class="page-title">Experience</h2>
-
-    <h3 class="section">Research</h3>
-
-    <div class="entry">
-      <span class="title">Graduate Research Assistant &mdash;
-      <a href="https://engineering.lehigh.edu/ise">Industrial and Systems Engineering</a>,
-      Lehigh University</span>
-      <div class="meta">2023 &ndash; present &middot; Advised by Prof. Akwum Onwunta</div>
-      <p>My dissertation, <em>PDEs and Machine Learning with Applications in Medical Imaging</em>,
-      develops optimization methods with provable guarantees and applies them to inverse
-      problems and imaging. Current work learns proximal operators with input-convex neural
-      networks and connects them to Hamilton&ndash;Jacobi equations, giving a route to
-      reconstruction that avoids solving an optimization problem at every query. Earlier work
-      analysed momentum-based minimization of the Ginzburg&ndash;Landau functional on
-      Euclidean spaces and graphs.</p>
-    </div>
-
-    <div class="entry">
-      <span class="title">Research Visit &mdash; Department of Mathematics, University of Utah</span>
-      <div class="meta">May &ndash; June 2024 &middot; Salt Lake City, UT, USA</div>
-    </div>
-
-    <h3 class="section">Teaching</h3>
-
-    <div class="entry">
-      <span class="title">Teaching Assistant &mdash; DSCI 311: Optimization and Mathematical
-      Foundations for Data Science</span>
-      <div class="meta">Summer 2025, Summer 2026 &middot; Lehigh University, PA, USA</div>
-      <ul class="plain tight">
-        <li>Onboarded 40 master's students to the required class tools (Jupyter Notebooks,
-        Google Colab, Slack, Git, and LaTeX) and provided technical troubleshooting and
-        debugging support.</li>
-        <li>Led two hours of weekly practice sessions plus an additional office hour.</li>
-        <li>Prepared six major homework projects, implementing LaTeX/Overleaf protocols and
-        standardizing version control for student submissions.</li>
-        <li>Facilitated office hours and Slack discussions, resolving questions on
-        optimization theory and debugging code in Google Colab.</li>
-        <li>Graded assignments covering linear algebra, deterministic and stochastic
-        optimization, and statistics, meeting compressed summer session deadlines.</li>
-      </ul>
-    </div>
-
-    <div class="entry">
-      <span class="title">Adjunct Lecturer &mdash; Dominion University, Nigeria</span>
-      <div class="meta">Fall 2020, Spring 2021, Fall 2022, Spring 2023 &middot;
-      Elementary Mathematics, Mathematical Methods, Advanced Calculus</div>
-      <ul class="plain tight">
-        <li>Instructed undergraduate students across three mathematics courses.</li>
-        <li>Prepared lecture notes and graded all coursework, exams, and assessments.</li>
-        <li>Mentored students needing additional support to bridge gaps in technical skills.</li>
-        <li>Supervised two final-year student dissertations.</li>
-      </ul>
-    </div>
-
-    <h3 class="section">Leadership &amp; Service</h3>
-    <ul class="plain">
-      <li><span class="year">2025&ndash;26</span> President,
-      <a href="https://www.linkedin.com/company/lehigh-informs-student-chapter/">Lehigh INFORMS
-      Student Chapter</a>, ISE Department, Lehigh University, Bethlehem, PA, USA.</li>
-
-      <li><span class="year">2024&ndash;26</span> Vice President and Treasurer,
-      <a href="https://www.linkedin.com/company/nigerian-club-lehigh-university/">Lehigh
-      University Graduate Association of Nigerian Students</a>, PA, USA.</li>
-
-      <li><span class="year">2024</span> Volunteer, Graduate International Student Orientation,
-      Lehigh University, Bethlehem, PA, USA.</li>
-
-      <li><span class="year">2022</span> Volunteer, AIMS Teacher Training Partnership Program,
-      Kigali, Rwanda.</li>
-
-      <li><span class="year">2017&ndash;19</span> Welfare Officer and President, Mathematics
-      Students Fellowship, Department of Mathematics, LAUTECH.</li>
-
-      <li><span class="year">2017&ndash;18</span> Director of Studies, Christ Apostolic Youth
-      Fellowship (CACYOF), LAUTECH.</li>
-
-      <li><span class="year">2016&ndash;19</span> Volunteer, free community development services
-      and medical outreaches, CACYOF outreach programs, LAUTECH.</li>
-    </ul>
-
-    <h3 class="section">Reviewing</h3>
-    <ul class="plain">
-      <li>Lehigh Rising Scholars Journal (LRSJ)</li>
-    </ul>
-
-    <h3 class="section">Professional Affiliations</h3>
-    <ul class="plain">
-      <li><span class="year">2023&ndash;</span> Institute for Operations Research and the
-      Management Sciences (INFORMS)</li>
-
-      <li><span class="year">2023&ndash;</span> Society for Industrial and Applied Mathematics
-      (SIAM)</li>
-    </ul>
-
-    <h3 class="section">Skills</h3>
-    <ul class="plain">
-      <li><strong>Programming</strong> &mdash; Python, R, MATLAB, SQL</li>
-      <li><strong>ML &amp; data science</strong> &mdash; scikit-learn, PyTorch, TensorFlow,
-      NumPy, pandas, SciPy</li>
-      <li><strong>Optimization</strong> &mdash; Gurobi, MOSEK, FEniCS</li>
-      <li><strong>Tools</strong> &mdash; Git, Docker, LaTeX</li>
-    </ul>
-"""
-
-RESEARCH = """
-    <h2 class="page-title">Research</h2>
-
-    <p class="lead">My work sits at the intersection of mathematical optimization,
-    machine learning, and partial differential equations &mdash; in particular, optimization
-    methods with provable guarantees and their application to inverse problems and medical
-    imaging.</p>
-
-    <h3 class="section">Research Interests</h3>
-    <ul class="plain">
-      <li>Mathematical optimization &mdash; first- and second-order methods, momentum, convergence theory</li>
-      <li>Inverse problems &mdash; proximal methods, regularization, learned reconstruction</li>
-      <li>Machine learning &mdash; optimization for learning, deep learning for scientific problems</li>
-      <li>Partial differential equations and scientific computing</li>
-      <li>Medical imaging</li>
-    </ul>
-
-    <h3 class="section">Journal Publications</h3>
-
-    <div class="entry">
-      <span class="title">Deep learning methods for inverse problems using connections between
-      proximal operators and Hamilton&ndash;Jacobi equations</span>
-      <div class="authors"><span class="me">Oluwatosin Akande</span>, Gabriel P. Langlois, Akwum Onwunta</div>
-      <div class="meta">Under second review at <em>SIAM Journal on Applied Mathematics</em>, 2025 &middot;
-      <a href="https://arxiv.org/abs/2512.23829">arXiv:2512.23829</a></div>
-    </div>
-
-    <div class="entry">
-      <span class="title">Momentum-based minimization of the Ginzburg&ndash;Landau functional
-      on Euclidean spaces and graphs</span>
-      <div class="authors"><span class="me">Oluwatosin Akande</span>, Patrick Dondl, Kanan Gupta,
-      Akwum Onwunta, Stephan Wojtowytsch</div>
-      <div class="meta">Under review at <em>Journal of Computational Physics</em>, 2024 &middot;
-      <a href="https://arxiv.org/abs/2501.00389">arXiv:2501.00389</a></div>
-    </div>
-
-    <h3 class="section">Conference Publications</h3>
-
-    <div class="entry">
-      <span class="title">Methodological performance of data science in eco-sustainable
-      design/engineering</span>
-      <div class="authors"><span class="me">O. A. Akande</span>, A. M. Adeleye, A. T. Adeleye</div>
-      <div class="meta">Proceedings of the 1st International Architectural Sciences and
-      Applications Symposium (IArcSAS), 27&ndash;29 October 2021</div>
-    </div>
-
-    <h3 class="section">CV</h3>
-    <p>A full CV is available on request &mdash; please
-    <a href="mailto:oaa323@lehigh.edu">get in touch</a>. Publications are also listed on
-    <a href="https://scholar.google.com/citations?user=tNDgo-8AAAAJ&amp;hl=en">Google Scholar</a>.</p>
-"""
-
-PROJECTS = """
-    <h2 class="page-title">Projects</h2>
-
-    <p class="lead">Code is on <a href="https://github.com/Akande-hub">GitHub</a>.</p>
-
-    <h3 class="section">Ongoing</h3>
-
-    <div class="project">
-      <h4>Learned Proximal Networks <span class="tag">Python</span></h4>
-      <p>Learning proximal operators directly with input-convex neural networks, and using
-      the learned prior for reconstruction in inverse problems.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/learned-proximal-networks">github.com/Akande-hub/learned-proximal-networks</a></div>
-    </div>
-
-    <div class="project">
-      <h4>Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs
-      <span class="tag">Python</span></h4>
-      <p>Numerics supporting the SIAP revision, building on
-      <a href="https://openreview.net/pdf?id=kNPcOaqC5r">Fang, Buchanan and Sulam (ICLR 2024)</a>.
-      The method learns a convex potential whose gradient is the proximal operator, then
-      recovers the prior either by inverting that gradient per query or by fitting a second
-      network &mdash; the latter matching a fully tuned inversion baseline without ever
-      inverting.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/lpn_for_nonconvex_control">github.com/Akande-hub/lpn_for_nonconvex_control</a></div>
-    </div>
-
-    <h3 class="section">Other Projects</h3>
-
-    <div class="project">
-      <h4>Nonlinear Optimization <span class="tag">MATLAB</span></h4>
-      <p>Implementations of line-search and trust-region methods for smooth nonlinear
-      optimization &mdash; steepest descent, modified Newton, truncated Newton-CG,
-      Cauchy-point, SR1, and Mor&eacute;&ndash;Sorensen solvers &mdash; benchmarked on seven
-      test problems with convergence plots, per-iteration logs, and a written report.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/Nonlinear-Optimization">github.com/Akande-hub/Nonlinear-Optimization</a></div>
-    </div>
-
-    <div class="project">
-      <h4>Scientific Computing in Python <span class="tag">Python</span></h4>
-      <p>Numerical methods across ordinary differential equations, numerical linear algebra,
-      data assimilation, data-driven optimization, and financial mathematics.</p>
-      <div class="repo"><a href="https://github.com/Akande-hub/Scientific-Computing-in-Python">github.com/Akande-hub/Scientific-Computing-in-Python</a></div>
-    </div>
-"""
-
-TALKS = """
-    <h2 class="page-title">Talks &amp; Conferences</h2>
-
-    <h3 class="section">Invited &amp; Contributed Talks</h3>
-    <ul class="plain">
-      <li><span class="year">2026</span> <strong>Deep learning methods for inverse problems
-      using connections between proximal operators and Hamilton&ndash;Jacobi equations.</strong>
-      INFORMS Annual Meeting, 1&ndash;4 November 2026, San Francisco, CA, USA.</li>
-
-      <li><span class="year">2026</span> <strong>Deep learning methods for inverse problems
-      using connections between proximal operators and Hamilton&ndash;Jacobi equations.</strong>
-      Modeling and Optimization: Theory and Applications (MOPTA), 18&ndash;19 August 2026,
-      Lehigh University, Bethlehem, PA, USA.</li>
-
-      <li><span class="year">2025</span> <strong>Momentum-based optimization in machine
-      learning.</strong> INFORMS Chapter Research Collaboration, 13 November 2025, Industrial
-      and Systems Engineering Department, Rutgers University, NJ, USA.</li>
-
-      <li><span class="year">2024</span> <strong>Momentum-based minimization of the
-      Ginzburg&ndash;Landau functional on Euclidean spaces and graphs.</strong>
-      SIAM New York&ndash;New Jersey&ndash;Pennsylvania Section Conference,
-      1&ndash;3 November 2024, Rochester Institute of Technology, NY, USA.</li>
-
-      <li><span class="year">2022</span> <strong>Time-series analysis using spectral and
-      wavelet analysis.</strong> AIMS Week, 20 April 2022, African Institute for Mathematical
-      Sciences, Kigali, Rwanda.</li>
-    </ul>
-
-    <h3 class="section">Participation</h3>
-    <ul class="plain">
-      <li><span class="year">2024</span> Modeling and Optimization: Theory and Applications
-      (MOPTA), 14&ndash;16 August 2024, Lehigh University, Bethlehem, PA, USA.</li>
-
-      <li><span class="year">2024</span> Research visit, May&ndash;June 2024, Department of
-      Mathematics, University of Utah, Salt Lake City, UT, USA.</li>
-    </ul>
-"""
-
-AWARDS = """
-    <h2 class="page-title">Awards &amp; Honors</h2>
-
-    <ul class="plain">
-      <li><span class="year">2026</span> <strong>Travel Award ($500)</strong>, Rossin College
-      Professional Development Program, Lehigh University.</li>
-
-      <li><span class="year">2026</span> <strong>Travel Award ($650)</strong>, 2026 INFORMS
-      Annual Meeting.</li>
-
-      <li><span class="year">2026</span> <strong>Travel Award ($400)</strong>, 2026 Northeast
-      Region Workshop on PDEs and Applied Mathematics.</li>
-
-      <li><span class="year">2024</span> <strong>SIAM-NNP Travel Award ($350)</strong>,
-      2024 SIAM New York&ndash;New Jersey&ndash;Pennsylvania Section Conference.</li>
-
-      <li><span class="year">2023</span> <strong>Rossin College Doctoral Fellowship
-      (Dean's Fellow)</strong>, P.C. Rossin College of Engineering, Lehigh University, USA.</li>
-
-      <li><span class="year">2023</span> <strong>Google &amp; Facebook M.Sc. Fellowship</strong>,
-      African Master's in Machine Intelligence (AMMI).</li>
-
-      <li><span class="year">2021</span> <strong>M.Sc. Fully Funded Fellowship</strong>,
-      African Institute for Mathematical Sciences (AIMS), Rwanda.</li>
-
-      <li><span class="year">2019</span> <strong>First Class Honors Merit Award</strong>,
-      Department of Pure and Applied Mathematics, Ladoke Akintola University of Technology,
-      Nigeria.</li>
-    </ul>
-"""
-
-PAGES = [
-    ("index.html", "Home", HOME),
-    ("experience.html", "Experience", EXPERIENCE),
-    ("research.html", "Research", RESEARCH),
-    ("projects.html", "Projects", PROJECTS),
-    ("talks.html", "Talks", TALKS),
-    ("awards.html", "Awards &amp; Honors", AWARDS),
-]
+def build_home(site, home, research, projects):
+    about = md_block(home["about"]).replace("<p>", '<p class="lead">', 1)
+    p = [page_title("About"), "", about, ""]
+
+    p.append(section("Education"))
+    p.append("")
+    for e in home["education"]:
+        body = "      <p>%s</p>" % md_inline(e["detail"]) if e.get("detail") else None
+        p.append(entry(e["degree"], e.get("meta"), body))
+        p.append("")
+
+    p.append(section("Research Interests"))
+    p.append("    <p>%s</p>" % md_inline(home["interests"]))
+    p.append("")
+
+    n = int(home.get("selected_publications", 2))
+    if n:
+        p.append(section("Selected Publications"))
+        p.append("")
+        for pub in research["journal"][:n]:
+            p.append(publication(pub, site))
+            p.append("")
+        p.append('    <p class="more"><a href="research.html">All publications &rarr;</a></p>')
+        p.append("")
+
+    m = int(home.get("selected_projects", 2))
+    if m:
+        p.append(section("Ongoing Projects"))
+        p.append("")
+        for proj in projects["ongoing"][:m]:
+            p.append(project(proj, key="short_description", show_tag=False))
+            p.append("")
+        p.append('    <p class="more"><a href="projects.html">All projects &rarr;</a></p>')
+
+    return "\n".join(p).rstrip()
+
+
+def build_experience(site, exp):
+    p = [page_title("Experience"), ""]
+
+    p.append(section("Research"))
+    p.append("")
+    for r in exp["research"]:
+        body = "      <p>%s</p>" % md_inline(r["detail"]) if r.get("detail") else None
+        p.append(entry(md_inline(r["title"]), r.get("meta"), body))
+        p.append("")
+
+    p.append(section("Teaching"))
+    p.append("")
+    for t in exp["teaching"]:
+        bullets = None
+        if t.get("bullets"):
+            lines = ['      <ul class="plain tight">']
+            lines += ["        <li>%s</li>" % md_inline(b) for b in t["bullets"]]
+            lines.append("      </ul>")
+            bullets = "\n".join(lines)
+        p.append(entry(md_inline(t["title"]), t.get("meta"), bullets))
+        p.append("")
+
+    p.append(section("Leadership &amp; Service"))
+    p.append(year_list(exp["service"]))
+    p.append("")
+
+    p.append(section("Reviewing"))
+    p.append('    <ul class="plain">')
+    p += ["      <li>%s</li>" % md_inline(r) for r in exp["reviewing"]]
+    p.append("    </ul>")
+    p.append("")
+
+    p.append(section("Professional Affiliations"))
+    p.append(year_list(exp["affiliations"]))
+    p.append("")
+
+    p.append(section("Skills"))
+    p.append('    <ul class="plain">')
+    for s in exp["skills"]:
+        p.append("      <li><strong>%s</strong> &mdash; %s</li>" % (s["label"], s["items"]))
+    p.append("    </ul>")
+
+    return "\n".join(p).rstrip()
+
+
+def build_research(site, research):
+    p = [page_title("Research"), "", md_block(research["intro"]).replace("<p>", '<p class="lead">', 1), ""]
+
+    p.append(section("Research Interests"))
+    p.append('    <ul class="plain">')
+    p += ["      <li>%s</li>" % md_inline(i) for i in research["interests"]]
+    p.append("    </ul>")
+    p.append("")
+
+    p.append(section("Journal Publications"))
+    p.append("")
+    for pub in research["journal"]:
+        p.append(publication(pub, site))
+        p.append("")
+
+    if research.get("conference"):
+        p.append(section("Conference Publications"))
+        p.append("")
+        for pub in research["conference"]:
+            p.append(publication(pub, site))
+            p.append("")
+
+    p.append(section("CV"))
+    p.append("    <p>%s</p>" % md_inline(research["cv_note"]))
+    return "\n".join(p).rstrip()
+
+
+def build_projects(site, projects):
+    p = [page_title("Projects"), "",
+         '    <p class="lead">%s</p>' % md_inline(projects["intro"]), ""]
+    p.append(section("Ongoing"))
+    p.append("")
+    for proj in projects["ongoing"]:
+        p.append(project(proj))
+        p.append("")
+    p.append(section("Other Projects"))
+    p.append("")
+    for proj in projects["other"]:
+        p.append(project(proj))
+        p.append("")
+    return "\n".join(p).rstrip()
+
+
+def build_talks(site, talks):
+    p = [page_title("Talks &amp; Conferences"), ""]
+    p.append(section("Invited &amp; Contributed Talks"))
+    p.append('    <ul class="plain">')
+    for t in talks["talks"]:
+        p.append('      <li><span class="year">%s</span> <strong>%s</strong> %s</li>'
+                 % (t["year"], md_inline(t["title"]), md_inline(t["venue"])))
+    p.append("    </ul>")
+    p.append("")
+    p.append(section("Participation"))
+    p.append(year_list(talks["participation"]))
+    return "\n".join(p).rstrip()
+
+
+def build_awards(site, awards):
+    return "\n".join([page_title("Awards &amp; Honors"), "", year_list(awards["awards"])]).rstrip()
+
+
+def main():
+    site = load("site")
+    home, exp = load("home"), load("experience")
+    research, projects = load("research"), load("projects")
+    talks, awards = load("talks"), load("awards")
+
+    pages = [
+        ("index.html", "Home", build_home(site, home, research, projects)),
+        ("experience.html", "Experience", build_experience(site, exp)),
+        ("research.html", "Research", build_research(site, research)),
+        ("projects.html", "Projects", build_projects(site, projects)),
+        ("talks.html", "Talks", build_talks(site, talks)),
+        ("awards.html", "Awards &amp; Honors", build_awards(site, awards)),
+    ]
+    for fname, title, body in pages:
+        with open(os.path.join(ROOT, fname), "w", encoding="utf-8") as fh:
+            fh.write(shell(site, fname, title, body))
+        print("wrote", fname)
+    open(os.path.join(ROOT, ".nojekyll"), "w").close()
+    print("wrote .nojekyll")
+
 
 if __name__ == "__main__":
-    for fname, title, body in PAGES:
-        with open(os.path.join(OUT, fname), "w", encoding="utf-8") as fh:
-            fh.write(shell(fname, title, body))
-        print("wrote", fname)
-    # Tell GitHub Pages to serve these files as-is rather than run Jekyll.
-    open(os.path.join(OUT, ".nojekyll"), "w").close()
-    print("wrote .nojekyll")
+    main()

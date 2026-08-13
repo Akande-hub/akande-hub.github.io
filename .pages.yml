@@ -6,7 +6,11 @@
 #
 # Text fields accept Markdown: **bold**, *italic*, [link](https://example.com).
 
-media: assets
+media:
+  input: assets
+  output: /assets
+  categories: [image]
+  rename: safe
 
 settings:
   content:
@@ -225,6 +229,12 @@ content:
       - { name: department_url, label: Department URL, type: string }
       - { name: university, label: University, type: string }
       - { name: location, label: Location, type: string }
+      - name: avatar
+        label: Photo
+        type: image
+        description: Square images look best. Shown as a circle in the sidebar.
+        options:
+          extensions: [jpg, jpeg, png, webp]
       - { name: footer_year, label: Footer year, type: string }
       - { name: meta_description, label: Search engine description, type: text, options: { rows: 4 } }
       - name: links

@@ -375,3 +375,90 @@ PROJECTS = """
       <div class="repo"><a href="https://github.com/Akande-hub/Scientific-Computing-in-Python">github.com/Akande-hub/Scientific-Computing-in-Python</a></div>
     </div>
 """
+
+TALKS = """
+    <h2 class="page-title">Talks &amp; Conferences</h2>
+
+    <h3 class="section">Invited &amp; Contributed Talks</h3>
+    <ul class="plain">
+      <li><span class="year">2026</span> <strong>Deep learning methods for inverse problems
+      using connections between proximal operators and Hamilton&ndash;Jacobi equations.</strong>
+      INFORMS Annual Meeting, 1&ndash;4 November 2026, San Francisco, CA, USA.</li>
+
+      <li><span class="year">2026</span> <strong>Deep learning methods for inverse problems
+      using connections between proximal operators and Hamilton&ndash;Jacobi equations.</strong>
+      Modeling and Optimization: Theory and Applications (MOPTA), 18&ndash;19 August 2026,
+      Lehigh University, Bethlehem, PA, USA.</li>
+
+      <li><span class="year">2025</span> <strong>Momentum-based optimization in machine
+      learning.</strong> INFORMS Chapter Research Collaboration, 13 November 2025, Industrial
+      and Systems Engineering Department, Rutgers University, NJ, USA.</li>
+
+      <li><span class="year">2024</span> <strong>Momentum-based minimization of the
+      Ginzburg&ndash;Landau functional on Euclidean spaces and graphs.</strong>
+      SIAM New York&ndash;New Jersey&ndash;Pennsylvania Section Conference,
+      1&ndash;3 November 2024, Rochester Institute of Technology, NY, USA.</li>
+
+      <li><span class="year">2022</span> <strong>Time-series analysis using spectral and
+      wavelet analysis.</strong> AIMS Week, 20 April 2022, African Institute for Mathematical
+      Sciences, Kigali, Rwanda.</li>
+    </ul>
+
+    <h3 class="section">Participation</h3>
+    <ul class="plain">
+      <li><span class="year">2024</span> Modeling and Optimization: Theory and Applications
+      (MOPTA), 14&ndash;16 August 2024, Lehigh University, Bethlehem, PA, USA.</li>
+
+      <li><span class="year">2024</span> Research visit, May&ndash;June 2024, Department of
+      Mathematics, University of Utah, Salt Lake City, UT, USA.</li>
+    </ul>
+"""
+
+AWARDS = """
+    <h2 class="page-title">Awards &amp; Honors</h2>
+
+    <ul class="plain">
+      <li><span class="year">2026</span> <strong>Travel Award ($500)</strong>, Rossin College
+      Professional Development Program, Lehigh University.</li>
+
+      <li><span class="year">2026</span> <strong>Travel Award ($650)</strong>, 2026 INFORMS
+      Annual Meeting.</li>
+
+      <li><span class="year">2026</span> <strong>Travel Award ($400)</strong>, 2026 Northeast
+      Region Workshop on PDEs and Applied Mathematics.</li>
+
+      <li><span class="year">2024</span> <strong>SIAM-NNP Travel Award ($350)</strong>,
+      2024 SIAM New York&ndash;New Jersey&ndash;Pennsylvania Section Conference.</li>
+
+      <li><span class="year">2023</span> <strong>Rossin College Doctoral Fellowship
+      (Dean's Fellow)</strong>, P.C. Rossin College of Engineering, Lehigh University, USA.</li>
+
+      <li><span class="year">2023</span> <strong>Google &amp; Facebook M.Sc. Fellowship</strong>,
+      African Master's in Machine Intelligence (AMMI).</li>
+
+      <li><span class="year">2021</span> <strong>M.Sc. Fully Funded Fellowship</strong>,
+      African Institute for Mathematical Sciences (AIMS), Rwanda.</li>
+
+      <li><span class="year">2019</span> <strong>First Class Honors Merit Award</strong>,
+      Department of Pure and Applied Mathematics, Ladoke Akintola University of Technology,
+      Nigeria.</li>
+    </ul>
+"""
+
+PAGES = [
+    ("index.html", "Home", HOME),
+    ("experience.html", "Experience", EXPERIENCE),
+    ("research.html", "Research", RESEARCH),
+    ("projects.html", "Projects", PROJECTS),
+    ("talks.html", "Talks", TALKS),
+    ("awards.html", "Awards &amp; Honors", AWARDS),
+]
+
+if __name__ == "__main__":
+    for fname, title, body in PAGES:
+        with open(os.path.join(OUT, fname), "w", encoding="utf-8") as fh:
+            fh.write(shell(fname, title, body))
+        print("wrote", fname)
+    # Tell GitHub Pages to serve these files as-is rather than run Jekyll.
+    open(os.path.join(OUT, ".nojekyll"), "w").close()
+    print("wrote .nojekyll")

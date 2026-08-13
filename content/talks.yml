@@ -1,0 +1,40 @@
+talks:
+  - year: "2026"
+    title: >-
+      Deep learning methods for inverse problems using connections between proximal
+      operators and Hamilton&ndash;Jacobi equations.
+    venue: INFORMS Annual Meeting, 1&ndash;4 November 2026, San Francisco, CA, USA.
+  - year: "2026"
+    title: >-
+      Deep learning methods for inverse problems using connections between proximal
+      operators and Hamilton&ndash;Jacobi equations.
+    venue: >-
+      Modeling and Optimization: Theory and Applications (MOPTA), 18&ndash;19 August 2026,
+      Lehigh University, Bethlehem, PA, USA.
+  - year: "2025"
+    title: Momentum-based optimization in machine learning.
+    venue: >-
+      INFORMS Chapter Research Collaboration, 13 November 2025, Industrial and Systems
+      Engineering Department, Rutgers University, NJ, USA.
+  - year: "2024"
+    title: >-
+      Momentum-based minimization of the Ginzburg&ndash;Landau functional on Euclidean
+      spaces and graphs.
+    venue: >-
+      SIAM New York&ndash;New Jersey&ndash;Pennsylvania Section Conference,
+      1&ndash;3 November 2024, Rochester Institute of Technology, NY, USA.
+  - year: "2022"
+    title: Time-series analysis using spectral and wavelet analysis.
+    venue: >-
+      AIMS Week, 20 April 2022, African Institute for Mathematical Sciences,
+      Kigali, Rwanda.
+
+participation:
+  - year: "2024"
+    text: >-
+      Modeling and Optimization: Theory and Applications (MOPTA), 14&ndash;16 August 2024,
+      Lehigh University, Bethlehem, PA, USA.
+  - year: "2024"
+    text: >-
+      Research visit, May&ndash;June 2024, Department of Mathematics, University of Utah,
+      Salt Lake City, UT, USA.

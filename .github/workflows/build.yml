@@ -19,6 +19,8 @@ on:
 permissions:
   contents: write
 
+# Queue runs rather than running them together, so two quick saves in a row
+# cannot race each other.
 concurrency:
   group: build-site
   cancel-in-progress: false
@@ -27,9 +29,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Check out the tip of the branch rather than the commit that triggered
+      # this run. If another save landed while we were queued, we build on top
+      # of it instead of trying to push a stale history.
+      - uses: actions/checkout@v5
+        with:
+          ref: gh-pages
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -43,10 +51,30 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           if [ -z "$(git status --porcelain -- '*.html')" ]; then
-            echo "No page changes."
+            echo "Pages already match content; nothing to commit."
             exit 0
           fi
+
           git add ./*.html
           git commit -m "Rebuild pages from content [skip ci]"
-          git push
+
+          # Retry in case a newer save lands between our build and our push.
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected on attempt $attempt; rebasing on the latest branch."
+            git pull --rebase origin gh-pages || exit 1
+            python3 build.py
+            if [ -n "$(git status --porcelain -- '*.html')" ]; then
+              git add ./*.html
+              git commit --amend --no-edit
+            fi
+            sleep 5
+          done
+
+          echo "Could not push after 5 attempts."
+          exit 1

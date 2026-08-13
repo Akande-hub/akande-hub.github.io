@@ -1,41 +1,57 @@
-about: |
+about: >
   I'm a fourth-year PhD candidate in Industrial and Systems Engineering
-  ([Lehigh ISE](https://engineering.lehigh.edu/ise)) at Lehigh University, advised by
-  Professor Akwum Onwunta. My dissertation, *PDEs and Machine Learning with Applications
-  in Medical Imaging*, develops optimization and deep learning methods for inverse
+
+  ([Lehigh ISE](https://engineering.lehigh.edu/ise)) at Lehigh University,
+  advised by
+
+  Professor Akwum Onwunta. My dissertation, *PDEs and Machine Learning with
+  Applications
+
+  in Medical Imaging*, develops optimization and deep learning methods for
+  inverse
+
   problems and imaging.
 
-  Before Lehigh, I earned a Master's degree in Mathematical Sciences from the African
-  Institute for Mathematical Sciences ([AIMS](https://aims.ac.rw/)) in Rwanda, and a
-  Bachelor's degree in Pure and Applied Mathematics from Ladoke Akintola University of
+
+  Before Lehigh, I earned a Master's degree in Mathematical Sciences from the
+  African
+
+  Institute for Mathematical Sciences ([AIMS](https://aims.ac.rw/)) in Rwanda,
+  and a
+
+  Bachelor's degree in Pure and Applied Mathematics from Ladoke Akintola
+  University of
+
   Technology ([LAUTECH](https://www.lautech.edu.ng/undergraduate-programmes)) in
+
   Ogbomoso, Nigeria.
 
-  I served as President of the
-  [Lehigh INFORMS Student Chapter](https://www.linkedin.com/company/lehigh-informs-student-chapter/)
-  for 2025&ndash;2026, and as Vice President and Treasurer of the
-  [Lehigh University Graduate Association of Nigerian Students](https://www.linkedin.com/company/nigerian-club-lehigh-university/).
 
+  I served as President of the
+
+  [Lehigh INFORMS Student
+  Chapter](https://www.linkedin.com/company/lehigh-informs-student-chapter/)
+
+  for 2025&ndash;2026, and as Vice President and Treasurer of the
+
+  [Lehigh University Graduate Association of Nigerian
+  Students](https://www.linkedin.com/company/nigerian-club-lehigh-university/).
 education:
   - degree: Ph.D. in Industrial and Systems Engineering
     meta: 2023 &ndash; present &middot; Lehigh University, USA
-    detail: >-
-      Advisor: Prof. Akwum Onwunta. Dissertation: *PDEs and Machine Learning with
-      Applications in Medical Imaging*. Committee: Prof. Luis Nunes Vicente,
-      Prof. Daniel P. Robinson, Prof. Andreas Mang.
+    detail: "Advisor: Prof. Akwum Onwunta. Dissertation: *PDEs and Machine Learning
+      with Applications in Medical Imaging*."
   - degree: M.Sc. in Mathematical Sciences
-    meta: 2021 &ndash; 2022 &middot; African Institute for Mathematical Sciences, Rwanda
-    detail: >-
-      Advisor: Prof. Dedunje Biatat V.A. Thesis: *Artificial Neural Networks Under
-      Constraint*. Committee: Prof. Blaise Tchapnda, Prof. Marcellin Atemkeng.
+    meta: 2021 &ndash; 2022 &middot; African Institute for Mathematical Sciences,
+      Rwanda
+    detail: "Advisor: Prof. Dedunje Biatat V.A. Thesis: *Artificial Neural Networks
+      Under Constraint*. "
   - degree: B.Tech. in Pure and Applied Mathematics
-    meta: 2013 &ndash; 2019 &middot; Ladoke Akintola University of Technology, Nigeria
+    meta: 2013 &ndash; 2019 &middot; Ladoke Akintola University of Technology,
+      Nigeria
     detail: "Grade: 4.52/5.0. First Class Honors."
-
-interests: >-
-  Mathematical optimization &middot; Scientific computing &middot; Machine learning
-  &middot; Inverse problems &middot; Medical imaging &middot; Partial differential
-  equations
-
+interests: Mathematical optimization &middot; Scientific computing &middot;
+  Machine learning &middot; Inverse problems &middot; Medical imaging &middot;
+  Partial differential equations
 selected_publications: 2
 selected_projects: 2

@@ -123,6 +123,9 @@ def page_title(title):
 
 
 def shell(site, page_file, title, body):
+    # Pages CMS writes image paths as "/assets/photo.jpg"; the pages live at the
+    # site root, so strip the leading slash to keep the reference relative.
+    avatar = str(site.get("avatar") or "assets/avatar.jpg").lstrip("/")
     links = "\n".join(
         '        <li><a href="%s">%s</a></li>' % (l["url"], l["label"])
         for l in site["links"]
@@ -144,7 +147,7 @@ def shell(site, page_file, title, body):
 <div class="wrap">
 
   <aside class="sidebar">
-    <img class="avatar" src="assets/avatar.jpg" alt="{name}">
+    <img class="avatar" src="{avatar}" alt="{name}">
     <h1>{name}</h1>
     <p class="role">{role}</p>
     <div class="affil">
@@ -176,7 +179,7 @@ def shell(site, page_file, title, body):
         title=title, name=site["name"], desc=site["meta_description"].strip(),
         role=site["role"], dept_url=site["department_url"], dept=site["department"],
         university=site["university"], location=site["location"],
-        links=links, nav=nav, body=body, year=site["footer_year"],
+        links=links, nav=nav, body=body, year=site["footer_year"], avatar=avatar,
     )
 
 

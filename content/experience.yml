@@ -1,0 +1,93 @@
+research:
+  - title: >-
+      Graduate Research Assistant &mdash;
+      [Industrial and Systems Engineering](https://engineering.lehigh.edu/ise),
+      Lehigh University
+    meta: 2023 &ndash; present &middot; Advised by Prof. Akwum Onwunta
+    detail: >-
+      My dissertation, *PDEs and Machine Learning with Applications in Medical Imaging*,
+      develops optimization methods with provable guarantees and applies them to inverse
+      problems and imaging. Current work learns proximal operators with input-convex
+      neural networks and connects them to Hamilton&ndash;Jacobi equations, giving a route
+      to reconstruction that avoids solving an optimization problem at every query.
+      Earlier work analysed momentum-based minimization of the Ginzburg&ndash;Landau
+      functional on Euclidean spaces and graphs.
+  - title: Research Visit &mdash; Department of Mathematics, University of Utah
+    meta: May &ndash; June 2024 &middot; Salt Lake City, UT, USA
+
+teaching:
+  - title: >-
+      Teaching Assistant &mdash; DSCI 311: Optimization and Mathematical Foundations
+      for Data Science
+    meta: Summer 2025, Summer 2026 &middot; Lehigh University, PA, USA
+    bullets:
+      - >-
+        Onboarded 40 master's students to the required class tools (Jupyter Notebooks,
+        Google Colab, Slack, Git, and LaTeX) and provided technical troubleshooting and
+        debugging support.
+      - Led two hours of weekly practice sessions plus an additional office hour.
+      - >-
+        Prepared six major homework projects, implementing LaTeX/Overleaf protocols and
+        standardizing version control for student submissions.
+      - >-
+        Facilitated office hours and Slack discussions, resolving questions on
+        optimization theory and debugging code in Google Colab.
+      - >-
+        Graded assignments covering linear algebra, deterministic and stochastic
+        optimization, and statistics, meeting compressed summer session deadlines.
+  - title: Adjunct Lecturer &mdash; Dominion University, Nigeria
+    meta: >-
+      Fall 2020, Spring 2021, Fall 2022, Spring 2023 &middot; Elementary Mathematics,
+      Mathematical Methods, Advanced Calculus
+    bullets:
+      - Instructed undergraduate students across three mathematics courses.
+      - Prepared lecture notes and graded all coursework, exams, and assessments.
+      - Mentored students needing additional support to bridge gaps in technical skills.
+      - Supervised two final-year student dissertations.
+
+service:
+  - year: 2025&ndash;26
+    text: >-
+      President,
+      [Lehigh INFORMS Student Chapter](https://www.linkedin.com/company/lehigh-informs-student-chapter/),
+      ISE Department, Lehigh University, Bethlehem, PA, USA.
+  - year: 2024&ndash;26
+    text: >-
+      Vice President and Treasurer,
+      [Lehigh University Graduate Association of Nigerian Students](https://www.linkedin.com/company/nigerian-club-lehigh-university/),
+      PA, USA.
+  - year: "2024"
+    text: >-
+      Volunteer, Graduate International Student Orientation, Lehigh University,
+      Bethlehem, PA, USA.
+  - year: "2022"
+    text: Volunteer, AIMS Teacher Training Partnership Program, Kigali, Rwanda.
+  - year: 2017&ndash;19
+    text: >-
+      Welfare Officer and President, Mathematics Students Fellowship, Department of
+      Mathematics, LAUTECH.
+  - year: 2017&ndash;18
+    text: Director of Studies, Christ Apostolic Youth Fellowship (CACYOF), LAUTECH.
+  - year: 2016&ndash;19
+    text: >-
+      Volunteer, free community development services and medical outreaches, CACYOF
+      outreach programs, LAUTECH.
+
+reviewing:
+  - Lehigh Rising Scholars Journal (LRSJ)
+
+affiliations:
+  - year: 2023&ndash;
+    text: Institute for Operations Research and the Management Sciences (INFORMS)
+  - year: 2023&ndash;
+    text: Society for Industrial and Applied Mathematics (SIAM)
+
+skills:
+  - label: Programming
+    items: Python, R, MATLAB, SQL
+  - label: ML &amp; data science
+    items: scikit-learn, PyTorch, TensorFlow, NumPy, pandas, SciPy
+  - label: Optimization
+    items: Gurobi, MOSEK, FEniCS
+  - label: Tools
+    items: Git, Docker, LaTeX

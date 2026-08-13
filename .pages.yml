@@ -1,0 +1,237 @@
+# Pages CMS configuration - https://pagescms.org
+#
+# Editing anything below happens at app.pagescms.org (sign in with GitHub,
+# pick this repository). Saving commits to the repo, which triggers the
+# GitHub Action that rebuilds the HTML pages.
+#
+# Text fields accept Markdown: **bold**, *italic*, [link](https://example.com).
+
+media: assets
+
+settings:
+  content:
+    merge: false
+
+content:
+  - name: home
+    label: Home page
+    type: file
+    path: content/home.yml
+    icon: house
+    fields:
+      - name: about
+        label: About text
+        type: text
+        description: One or more paragraphs. Separate paragraphs with a blank line.
+        options:
+          rows: 12
+      - name: education
+        label: Education
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{degree}"
+        fields:
+          - { name: degree, label: Degree, type: string, required: true }
+          - { name: meta, label: Years and institution, type: string }
+          - { name: detail, label: Advisor, thesis, committee, type: text, options: { rows: 4 } }
+      - name: interests
+        label: Research interests (one line)
+        type: text
+        options: { rows: 3 }
+      - name: selected_publications
+        label: How many publications to show on the home page
+        type: number
+      - name: selected_projects
+        label: How many projects to show on the home page
+        type: number
+
+  - name: experience
+    label: Experience page
+    type: file
+    path: content/experience.yml
+    icon: briefcase
+    fields:
+      - name: research
+        label: Research positions
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{title}" }
+        fields:
+          - { name: title, label: Role, type: text, required: true, options: { rows: 3 } }
+          - { name: meta, label: Dates and detail line, type: string }
+          - { name: detail, label: Description, type: text, options: { rows: 8 } }
+      - name: teaching
+        label: Teaching positions
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{title}" }
+        fields:
+          - { name: title, label: Role and course, type: text, required: true, options: { rows: 3 } }
+          - { name: meta, label: Terms and institution, type: string }
+          - { name: bullets, label: Responsibilities, type: text, list: true, options: { rows: 3 } }
+      - name: service
+        label: Leadership and service
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{year} - {text}" }
+        fields:
+          - { name: year, label: Year, type: string }
+          - { name: text, label: Role and organisation, type: text, options: { rows: 4 } }
+      - name: reviewing
+        label: Reviewing
+        type: string
+        list: true
+      - name: affiliations
+        label: Professional affiliations
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{text}" }
+        fields:
+          - { name: year, label: Years, type: string }
+          - { name: text, label: Organisation, type: string }
+      - name: skills
+        label: Skills
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{label}" }
+        fields:
+          - { name: label, label: Category, type: string }
+          - { name: items, label: Items (comma separated), type: string }
+
+  - name: research
+    label: Research page
+    type: file
+    path: content/research.yml
+    icon: microscope
+    fields:
+      - name: intro
+        label: Intro paragraph
+        type: text
+        options: { rows: 5 }
+      - name: interests
+        label: Research interests
+        type: text
+        list: true
+        options: { rows: 2 }
+      - name: journal
+        label: Journal publications
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{title}" }
+        fields:
+          - { name: title, label: Title, type: text, required: true, options: { rows: 3 } }
+          - { name: authors, label: Authors, type: text, options: { rows: 2 } }
+          - { name: venue, label: Venue and status, type: text, options: { rows: 2 } }
+          - { name: link_label, label: Link text, type: string }
+          - { name: link_url, label: Link URL, type: string }
+      - name: conference
+        label: Conference publications
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{title}" }
+        fields:
+          - { name: title, label: Title, type: text, required: true, options: { rows: 3 } }
+          - { name: authors, label: Authors, type: text, options: { rows: 2 } }
+          - { name: venue, label: Venue, type: text, options: { rows: 3 } }
+          - { name: link_label, label: Link text, type: string }
+          - { name: link_url, label: Link URL, type: string }
+      - name: cv_note
+        label: CV note
+        type: text
+        options: { rows: 4 }
+
+  - name: projects
+    label: Projects page
+    type: file
+    path: content/projects.yml
+    icon: folder-git-2
+    fields:
+      - name: intro
+        label: Intro line
+        type: string
+      - name: ongoing
+        label: Ongoing projects
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{name}" }
+        fields:
+          - { name: name, label: Project name, type: string, required: true }
+          - { name: tag, label: Language tag, type: string }
+          - { name: description, label: Full description (Projects page), type: text, options: { rows: 8 } }
+          - { name: short_description, label: Short description (home page), type: text, options: { rows: 4 } }
+          - { name: repo, label: Repository URL, type: string }
+      - name: other
+        label: Other projects
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{name}" }
+        fields:
+          - { name: name, label: Project name, type: string, required: true }
+          - { name: tag, label: Language tag, type: string }
+          - { name: description, label: Description, type: text, options: { rows: 8 } }
+          - { name: repo, label: Repository URL, type: string }
+
+  - name: talks
+    label: Talks page
+    type: file
+    path: content/talks.yml
+    icon: presentation
+    fields:
+      - name: talks
+        label: Invited and contributed talks
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{year} - {title}" }
+        fields:
+          - { name: year, label: Year, type: string, required: true }
+          - { name: title, label: Talk title, type: text, options: { rows: 3 } }
+          - { name: venue, label: Event, date and location, type: text, options: { rows: 3 } }
+      - name: participation
+        label: Conferences attended
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{year} - {text}" }
+        fields:
+          - { name: year, label: Year, type: string }
+          - { name: text, label: Event, date and location, type: text, options: { rows: 3 } }
+
+  - name: awards
+    label: Awards page
+    type: file
+    path: content/awards.yml
+    icon: award
+    fields:
+      - name: awards
+        label: Awards and honors
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{year} - {text}" }
+        fields:
+          - { name: year, label: Year, type: string, required: true }
+          - { name: text, label: Award, type: text, options: { rows: 3 } }
+
+  - name: site
+    label: Site settings
+    type: file
+    path: content/site.yml
+    icon: settings
+    fields:
+      - { name: name, label: Your name, type: string, required: true }
+      - { name: name_variants, label: Other forms of your name (for bolding in citations), type: string, list: true }
+      - { name: role, label: Role, type: string }
+      - { name: department, label: Department, type: string }
+      - { name: department_url, label: Department URL, type: string }
+      - { name: university, label: University, type: string }
+      - { name: location, label: Location, type: string }
+      - { name: footer_year, label: Footer year, type: string }
+      - { name: meta_description, label: Search engine description, type: text, options: { rows: 4 } }
+      - name: links
+        label: Sidebar links
+        type: object
+        list:
+          collapsible: { collapsed: true, summary: "{label}" }
+        fields:
+          - { name: label, label: Label, type: string, required: true }
+          - { name: url, label: URL, type: string, required: true }

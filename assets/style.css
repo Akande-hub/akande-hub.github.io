@@ -211,3 +211,19 @@ footer.site {
   nav.top { gap: 16px; font-size: 0.9rem; }
   nav.top a.active { padding-bottom: 0; margin-bottom: 0; border-bottom: none; }
 }
+
+/* ---------- Nested detail bullets inside an entry ---------- */
+
+ul.plain.tight {
+  list-style: disc;
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+ul.plain.tight > li {
+  margin-bottom: 5px;
+  padding-left: 0;
+  border-left: none;
+  font-size: 0.94rem;
+  color: #3d454d;
+}

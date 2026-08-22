@@ -44,14 +44,14 @@
     <h3 class="section">Ongoing</h3>
 
     <div class="project">
-      <h4>Learned Proximal Networks <span class="tag">Python</span></h4>
-      <p>Learning proximal operators directly with input-convex neural networks, and using the learned prior for reconstruction in inverse problems.</p>
+      <h4>Deformable Medical Image Registration with Learned Proximal Networks <span class="tag">Python</span></h4>
+      <p>Deformable image registration finds a smooth spatial transformation aligning one image to another — the basis for comparing brain scans across patients or tracking anatomical change over time. The problem is ill-posed: many different deformations align the images equally well, so a regularizer is needed to select a plausible one. Classical solvers like ANTs impose this with a fixed smoothness assumption, typically a Gaussian. This project replaces that hand-designed prior with a Learned Proximal Network — a neural network trained on displacement fields, architecturally constrained so it provably behaves as a proximal operator — plugged into a plug-and-play ADMM solver. The aim is a regularizer that reflects the actual statistics of anatomical deformation rather than a generic smoothness assumption, while retaining the convergence guarantees of classical optimization. Evaluation uses 2D phantoms and 3D brain MRI (NIREP), benchmarked against ANTs/SyN and PIRATE, and measures not just image similarity but the accuracy of the recovered deformation field itself and whether it remains diffeomorphic.</p>
       <div class="repo"><a href="https://github.com/Akande-hub/learned-proximal-networks">github.com/Akande-hub/learned-proximal-networks</a></div>
     </div>
 
     <div class="project">
       <h4>Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs <span class="tag">Python</span></h4>
-      <p>Numerics supporting the SIAP revision, building on <a href="https://openreview.net/pdf?id=kNPcOaqC5r">Fang, Buchanan and Sulam (ICLR 2024)</a>. The method learns a convex potential whose gradient is the proximal operator, then recovers the prior either by inverting that gradient per query or by fitting a second network &mdash; the latter matching a fully tuned inversion baseline without ever inverting.</p>
+      <p>Build on <a href="https://openreview.net/pdf?id=kNPcOaqC5r">Fang, Buchanan and Sulam (ICLR 2024)</a>. The method learns a convex potential whose gradient is the proximal operator, then recovers the prior either by inverting that gradient per query or by fitting a second network &mdash; the latter matching a fully tuned inversion baseline without ever inverting.</p>
       <div class="repo"><a href="https://github.com/Akande-hub/lpn_for_nonconvex_control">github.com/Akande-hub/lpn_for_nonconvex_control</a></div>
     </div>
 

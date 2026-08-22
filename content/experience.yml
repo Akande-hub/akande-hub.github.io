@@ -10,6 +10,9 @@ research:
       problems and imaging. Current work learns proximal operators with input-convex
       neural networks and connects them to Hamilton&ndash;Jacobi equations, giving a route
       to reconstruction that avoids solving an optimization problem at every query.
+      An ongoing project carries these ideas into medical image registration, where
+      aligning two scans amounts to a large-scale, ill-posed optimization problem over
+      deformation fields.
       Earlier work analysed momentum-based minimization of the Ginzburg&ndash;Landau
       functional on Euclidean spaces and graphs.
   - title: Research Visit &mdash; Department of Mathematics, University of Utah

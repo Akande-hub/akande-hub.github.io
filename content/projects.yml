@@ -1,41 +1,38 @@
 intro: Code is on [GitHub](https://github.com/Akande-hub).
-
 ongoing:
   - name: Learned Proximal Networks
     tag: Python
-    description: >-
-      Learning proximal operators directly with input-convex neural networks, and using
-      the learned prior for reconstruction in inverse problems.
+    description: Learning proximal operators directly with input-convex neural
+      networks, and using the learned prior for reconstruction in inverse
+      problems.
+    short_description: Learning proximal operators directly with input-convex neural
+      networks, and using the learned prior for reconstruction in inverse
+      problems.
     repo: https://github.com/Akande-hub/learned-proximal-networks
-    short_description: >-
-      Learning proximal operators directly with input-convex neural networks, and using
-      the learned prior for reconstruction in inverse problems.
   - name: Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs
     tag: Python
-    description: >-
-      Numerics supporting the SIAP revision, building on
-      [Fang, Buchanan and Sulam (ICLR 2024)](https://openreview.net/pdf?id=kNPcOaqC5r).
-      The method learns a convex potential whose gradient is the proximal operator, then
-      recovers the prior either by inverting that gradient per query or by fitting a
-      second network &mdash; the latter matching a fully tuned inversion baseline without
-      ever inverting.
+    description: Building on [Fang, Buchanan and Sulam (ICLR
+      2024)](https://openreview.net/pdf?id=kNPcOaqC5r). The method learns a
+      convex potential whose gradient is the proximal operator, then recovers
+      the prior either by inverting that gradient per query or by fitting a
+      second network &mdash; the latter matching a fully tuned inversion
+      baseline without ever inverting.
+    short_description: "Numerics for the SIAP revision: learning a convex potential
+      whose gradient is the proximal operator, then recovering the prior without
+      per-query inversion."
     repo: https://github.com/Akande-hub/lpn_for_nonconvex_control
-    short_description: >-
-      Numerics for the SIAP revision: learning a convex potential whose gradient is the
-      proximal operator, then recovering the prior without per-query inversion.
-
 other:
   - name: Nonlinear Optimization
     tag: MATLAB
-    description: >-
-      Implementations of line-search and trust-region methods for smooth nonlinear
-      optimization &mdash; steepest descent, modified Newton, truncated Newton-CG,
-      Cauchy-point, SR1, and Mor&eacute;&ndash;Sorensen solvers &mdash; benchmarked on
-      seven test problems with convergence plots, per-iteration logs, and a written report.
+    description: Implementations of line-search and trust-region methods for smooth
+      nonlinear optimization &mdash; steepest descent, modified Newton,
+      truncated Newton-CG, Cauchy-point, SR1, and Mor&eacute;&ndash;Sorensen
+      solvers &mdash; benchmarked on seven test problems with convergence plots,
+      per-iteration logs, and a written report.
     repo: https://github.com/Akande-hub/Nonlinear-Optimization
   - name: Scientific Computing in Python
     tag: Python
-    description: >-
-      Numerical methods across ordinary differential equations, numerical linear algebra,
-      data assimilation, data-driven optimization, and financial mathematics.
+    description: Numerical methods across ordinary differential equations, numerical
+      linear algebra, data assimilation, data-driven optimization, and financial
+      mathematics.
     repo: https://github.com/Akande-hub/Scientific-Computing-in-Python

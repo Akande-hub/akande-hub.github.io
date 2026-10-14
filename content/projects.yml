@@ -1,13 +1,19 @@
 intro: Code is on [GitHub](https://github.com/Akande-hub).
 ongoing:
-  - name: Learned Proximal Networks
+  - name: Deformable Image Registration with Learned Proximal Networks (LPNs)
     tag: Python
-    description: Learning proximal operators directly with input-convex neural
-      networks, and using the learned prior for reconstruction in inverse
-      problems.
-    short_description: Learning proximal operators directly with input-convex neural
-      networks, and using the learned prior for reconstruction in inverse
-      problems.
+    description: We study plug-and-play (PnP) algorithms for deformable image
+      registration in which the regularizer is supplied by a learned proximal
+      network (LPN), i.e., a neural network that is, by construction, the exact
+      proximal operator of a (possibly nonconvex) learned regularization
+      functional. We analyze the convergence of the resulting PnP proximal
+      gradient and ADMM schemes for the nonconvex registration objective,
+      propose a variant that yields diffeomorphic transformations by
+      construction, and evaluate the approach on synthetic and 3D neuroimaging
+      data in comparison to ANTs.
+    short_description: We study plug-and-play (PnP) algorithms for deformable image
+      registration in which the regularizer is supplied by a learned proximal
+      network (LPN)
     repo: https://github.com/Akande-hub/learned-proximal-networks
   - name: Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs
     tag: Python

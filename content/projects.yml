@@ -21,11 +21,11 @@ ongoing:
     description: Building on [Fang, Buchanan and Sulam (ICLR
       2024)](https://openreview.net/pdf?id=kNPcOaqC5r). The method learns a
       convex potential whose gradient is the proximal operator, then recovers
-      the prior either by inverting that gradient per query or by fitting a
-      second network &mdash; the latter matching a fully tuned inversion
-      baseline without ever inverting.
+      the prior by fitting a second network or by using just one network when
+      the proximal operator is available.
     short_description: Learning a convex potential whose gradient is the proximal
-      operator, then recovering the prior without per-query inversion.
+      operator, then recovering the prior without per-query inversion (the prior
+      is evaluated in a single forward pass).
     repo: https://github.com/Akande-hub/lpn_for_nonconvex_control
 other:
   - name: Nonlinear Optimization

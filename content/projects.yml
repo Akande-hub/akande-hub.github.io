@@ -13,7 +13,8 @@ ongoing:
       data in comparison to ANTs.
     short_description: We study plug-and-play (PnP) algorithms for deformable image
       registration in which the regularizer is supplied by a learned proximal
-      network (LPN)
+      network (LPN) and evaluate the approach on synthetic and 3D neuroimaging
+      data in comparison to ANTs.
     repo: https://github.com/Akande-hub/learned-proximal-networks
   - name: Learned Proximal Networks for High-Dimensional Hamilton&ndash;Jacobi PDEs
     tag: Python

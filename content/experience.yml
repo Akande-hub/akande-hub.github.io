@@ -15,14 +15,23 @@ research:
       (possibly nonconvex) learned regularization functional.
   - title: Research Visit &mdash; Department of Mathematics, University of Utah
     meta: May &ndash; June 2024 &middot; Salt Lake City, UT, USA
+  bullets:
+    - 
 teaching:
-  - title: "Teaching Assistant &mdash; DSCI 311: Optimization and Mathematical
-      Foundations for Data Science"
+  - title: Teaching Assistant &mdash; Lehigh University, PA, USA 
     meta: "Summer 2025, Summer 2026 &middot; "
+    bullets:
+     - DSCI 311: Optimization and Mathematical Foundations for Data Science
   - title: Adjunct Lecturer &mdash; Dominion University, Nigeria
     meta: "Fall 2020, Spring 2021, Fall 2022, Spring 2023 "
     bullets:
-      - Elementary Mathematics, Mathematical Methods, Advanced Calculus
+      - MTH 101, 102, 104 General Mathematics I, II, III
+      - MTH 201 Mathematical Methods
+      - MTH 202	Elementary Differential Equation I
+      - MTH 203 Set, Logic and Algebra
+      - MTH 204	Linear Algebra I
+      - SEN 203 Discrete Structures
+      - MAT 001 Advanced Calculus
 affiliations:
   - year: 2023&ndash;
     text: Institute for Operations Research and the Management Sciences (INFORMS)

@@ -18,53 +18,11 @@ research:
 teaching:
   - title: "Teaching Assistant &mdash; DSCI 311: Optimization and Mathematical
       Foundations for Data Science"
-    meta: Summer 2025, Summer 2026 &middot; Lehigh University, PA, USA
-    bullets:
-      - Onboarded 40 master's students to the required class tools (Jupyter
-        Notebooks, Google Colab, Slack, Git, and LaTeX) and provided technical
-        troubleshooting and debugging support.
-      - Led two hours of weekly practice sessions plus an additional office hour.
-      - Prepared six major homework projects, implementing LaTeX/Overleaf
-        protocols and standardizing version control for student submissions.
-      - Facilitated office hours and Slack discussions, resolving questions on
-        optimization theory and debugging code in Google Colab.
-      - Graded assignments covering linear algebra, deterministic and stochastic
-        optimization, and statistics, meeting compressed summer session
-        deadlines.
+    meta: "Summer 2025, Summer 2026 &middot; "
   - title: Adjunct Lecturer &mdash; Dominion University, Nigeria
-    meta: Fall 2020, Spring 2021, Fall 2022, Spring 2023 &middot; Elementary
-      Mathematics, Mathematical Methods, Advanced Calculus
+    meta: "Fall 2020, Spring 2021, Fall 2022, Spring 2023 "
     bullets:
-      - Instructed undergraduate students across three mathematics courses.
-      - Prepared lecture notes and graded all coursework, exams, and assessments.
-      - Mentored students needing additional support to bridge gaps in technical
-        skills.
-      - Supervised two final-year student dissertations.
-service:
-  - year: 2025&ndash;26
-    text: President, [Lehigh INFORMS Student
-      Chapter](https://www.linkedin.com/company/lehigh-informs-student-chapter/),
-      ISE Department, Lehigh University, Bethlehem, PA, USA.
-  - year: 2024&ndash;26
-    text: Vice President and Treasurer, [Lehigh University Graduate Association of
-      Nigerian
-      Students](https://www.linkedin.com/company/nigerian-club-lehigh-university/),
-      PA, USA.
-  - year: "2024"
-    text: Volunteer, Graduate International Student Orientation, Lehigh University,
-      Bethlehem, PA, USA.
-  - year: "2022"
-    text: Volunteer, AIMS Teacher Training Partnership Program, Kigali, Rwanda.
-  - year: 2017&ndash;19
-    text: Welfare Officer and President, Mathematics Students Fellowship, Department
-      of Mathematics, LAUTECH.
-  - year: 2017&ndash;18
-    text: Director of Studies, Christ Apostolic Youth Fellowship (CACYOF), LAUTECH.
-  - year: 2016&ndash;19
-    text: Volunteer, free community development services and medical outreaches,
-      CACYOF outreach programs, LAUTECH.
-reviewing:
-  - Lehigh Rising Scholars Journal (LRSJ)
+      - Elementary Mathematics, Mathematical Methods, Advanced Calculus
 affiliations:
   - year: 2023&ndash;
     text: Institute for Operations Research and the Management Sciences (INFORMS)

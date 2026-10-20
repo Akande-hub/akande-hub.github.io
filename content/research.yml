@@ -9,7 +9,7 @@ interests:
   - Machine learning &mdash; optimization for machine learning, scientific
     machine learning
   - Partial differential equations
-  - Medical image registration
+  - Deformable image registration
 journal:
   - title: Deep learning methods for inverse problems using connections between
       proximal operators and Hamilton&ndash;Jacobi equations

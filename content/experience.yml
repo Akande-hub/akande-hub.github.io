@@ -1,42 +1,77 @@
 research:
-  - title: Graduate Research Assistant &mdash; [Industrial and Systems
-      Engineering](https://engineering.lehigh.edu/ise), Lehigh University
+  - title: >-
+      Graduate Research Assistant &mdash;
+      [Industrial and Systems Engineering](https://engineering.lehigh.edu/ise),
+      Lehigh University
     meta: 2023 &ndash; present &middot; Advised by Prof. Akwum Onwunta
-    detail: My dissertation, *PDEs and Machine Learning with Applications in Medical
-      Imaging*, develops optimization methods with provable guarantees and
-      applies them to inverse problems and imaging. Current work learns proximal
-      operators with input-convex neural networks and connects them to
-      Hamilton&ndash; Jacobi equations, giving a route to reconstruction that
-      avoids solving an optimization problem at every query. An ongoing project
-      carries these ideas into medical image registration, studying
-      plug-and-play (PnP) algorithms for deformable image registration in which
-      the regularizer is supplied by a learned proximal network (LPN), i.e., a
-      neural network that is, by construction, the exact proximal operator of a
-      (possibly nonconvex) learned regularization functional.
+    detail: >-
+      My dissertation, *PDEs and Machine Learning with Applications in Medical
+      Imaging*, develops optimization methods with provable guarantees and applies
+      them to inverse problems and imaging. Current work learns proximal operators
+      with input-convex neural networks and connects them to Hamilton&ndash;Jacobi
+      equations, giving a route to reconstruction that avoids solving an
+      optimization problem at every query. An ongoing project carries these ideas
+      into medical image registration, studying plug-and-play (PnP) algorithms for
+      deformable image registration in which the regularizer is supplied by a
+      learned proximal network (LPN), i.e., a neural network that is, by
+      construction, the exact proximal operator of a (possibly nonconvex) learned
+      regularization functional.
   - title: Research Visit &mdash; Department of Mathematics, University of Utah
     meta: May &ndash; June 2024 &middot; Salt Lake City, UT, USA
-  bullets:
-    - 
+
 teaching:
-  - title: Teaching Assistant &mdash; Lehigh University, PA, USA 
-    meta: "Summer 2025, Summer 2026 &middot; "
+  - title: Teaching Assistant &mdash; Lehigh University, PA, USA
+    meta: Summer 2025, Summer 2026
     bullets:
-     - DSCI 311: Optimization and Mathematical Foundations for Data Science
+      - "DSCI 311: Optimization and Mathematical Foundations for Data Science"
   - title: Adjunct Lecturer &mdash; Dominion University, Nigeria
-    meta: "Fall 2020, Spring 2021, Fall 2022, Spring 2023 "
+    meta: Fall 2020, Spring 2021, Fall 2022, Spring 2023
     bullets:
       - MTH 101, 102, 104 General Mathematics I, II, III
       - MTH 201 Mathematical Methods
-      - MTH 202	Differential Equation I
+      - MTH 202 Differential Equation I
       - MTH 203 Set, Logic and Algebra
-      - MTH 204	Linear Algebra I
+      - MTH 204 Linear Algebra I
       - SEN 203 Discrete Structures
       - MAT 001 Advanced Calculus
+
+service:
+  - year: 2025&ndash;26
+    text: >-
+      President,
+      [Lehigh INFORMS Student Chapter](https://www.linkedin.com/company/lehigh-informs-student-chapter/),
+      ISE Department, Lehigh University, Bethlehem, PA, USA.
+  - year: 2024&ndash;26
+    text: >-
+      Vice President and Treasurer,
+      [Lehigh University Graduate Association of Nigerian Students](https://www.linkedin.com/company/nigerian-club-lehigh-university/),
+      PA, USA.
+  - year: "2024"
+    text: >-
+      Volunteer, Graduate International Student Orientation, Lehigh University,
+      Bethlehem, PA, USA.
+  - year: "2022"
+    text: Volunteer, AIMS Teacher Training Partnership Program, Kigali, Rwanda.
+  - year: 2017&ndash;19
+    text: >-
+      Welfare Officer and President, Mathematics Students Fellowship, Department of
+      Mathematics, LAUTECH.
+  - year: 2017&ndash;18
+    text: Director of Studies, Christ Apostolic Youth Fellowship (CACYOF), LAUTECH.
+  - year: 2016&ndash;19
+    text: >-
+      Volunteer, free community development services and medical outreaches, CACYOF
+      outreach programs, LAUTECH.
+
+reviewing:
+  - Lehigh Rising Scholars Journal (LRSJ)
+
 affiliations:
   - year: 2023&ndash;
     text: Institute for Operations Research and the Management Sciences (INFORMS)
   - year: 2023&ndash;
     text: Society for Industrial and Applied Mathematics (SIAM)
+
 skills:
   - label: Programming
     items: Python, R, MATLAB, SQL

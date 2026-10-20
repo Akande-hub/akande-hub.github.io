@@ -225,46 +225,59 @@ def build_home(site, home, research, projects):
 
 
 def build_experience(site, exp):
+    # Every section is optional. If a key is missing or empty in
+    # content/experience.yml the section is simply left out, so removing one
+    # cannot break the build.
+    def items(key):
+        return exp.get(key) or []
+
     p = [page_title("Experience"), ""]
 
-    p.append(section("Research"))
-    p.append("")
-    for r in exp["research"]:
-        body = "      <p>%s</p>" % md_inline(r["detail"]) if r.get("detail") else None
-        p.append(entry(md_inline(r["title"]), r.get("meta"), body))
+    if items("research"):
+        p.append(section("Research"))
+        p.append("")
+        for r in items("research"):
+            body = "      <p>%s</p>" % md_inline(r["detail"]) if r.get("detail") else None
+            p.append(entry(md_inline(r["title"]), r.get("meta"), body))
+            p.append("")
+
+    if items("teaching"):
+        p.append(section("Teaching"))
+        p.append("")
+        for t in items("teaching"):
+            bullets = None
+            rows = [b for b in (t.get("bullets") or []) if b]
+            if rows:
+                lines = ['      <ul class="plain tight">']
+                lines += ["        <li>%s</li>" % md_inline(b) for b in rows]
+                lines.append("      </ul>")
+                bullets = "\n".join(lines)
+            p.append(entry(md_inline(t["title"]), t.get("meta"), bullets))
+            p.append("")
+
+    if items("service"):
+        p.append(section("Leadership &amp; Service"))
+        p.append(year_list(items("service")))
         p.append("")
 
-    p.append(section("Teaching"))
-    p.append("")
-    for t in exp["teaching"]:
-        bullets = None
-        if t.get("bullets"):
-            lines = ['      <ul class="plain tight">']
-            lines += ["        <li>%s</li>" % md_inline(b) for b in t["bullets"]]
-            lines.append("      </ul>")
-            bullets = "\n".join(lines)
-        p.append(entry(md_inline(t["title"]), t.get("meta"), bullets))
+    if items("reviewing"):
+        p.append(section("Reviewing"))
+        p.append('    <ul class="plain">')
+        p += ["      <li>%s</li>" % md_inline(r) for r in items("reviewing") if r]
+        p.append("    </ul>")
         p.append("")
 
-    p.append(section("Leadership &amp; Service"))
-    p.append(year_list(exp["service"]))
-    p.append("")
+    if items("affiliations"):
+        p.append(section("Professional Affiliations"))
+        p.append(year_list(items("affiliations")))
+        p.append("")
 
-    p.append(section("Reviewing"))
-    p.append('    <ul class="plain">')
-    p += ["      <li>%s</li>" % md_inline(r) for r in exp["reviewing"]]
-    p.append("    </ul>")
-    p.append("")
-
-    p.append(section("Professional Affiliations"))
-    p.append(year_list(exp["affiliations"]))
-    p.append("")
-
-    p.append(section("Skills"))
-    p.append('    <ul class="plain">')
-    for s in exp["skills"]:
-        p.append("      <li><strong>%s</strong> &mdash; %s</li>" % (s["label"], s["items"]))
-    p.append("    </ul>")
+    if items("skills"):
+        p.append(section("Skills"))
+        p.append('    <ul class="plain">')
+        for s in items("skills"):
+            p.append("      <li><strong>%s</strong> &mdash; %s</li>" % (s["label"], s["items"]))
+        p.append("    </ul>")
 
     return "\n".join(p).rstrip()
 
